@@ -1,13 +1,13 @@
 import React, { useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls, Box } from '@react-three/drei';
+import { OrbitControls, Box, Sphere, Torus } from '@react-three/drei';
 import { TextureLoader } from 'three';
 import './App.css'; // File CSS cơ bản để tùy chỉnh nền
 import myImage from './assets/my-image.jpg';
 import myImage2 from './assets/my-image2.jpg';
 
-// Component hiển thị khối 3D với ảnh - Animation xoay
-function TexturedBox({ imageUrl }) {
+// Component hiển thị khối 3D với ảnh - Animation DNA Helix (xoắn ốc)
+function DNAHelixBox({ imageUrl }) {
   const meshRef = useRef();
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
@@ -15,63 +15,133 @@ function TexturedBox({ imageUrl }) {
   // Load ảnh làm texture
   const texture = useLoader(TextureLoader, imageUrl);
 
-  // Xoay khối lập phương
-  useFrame(() => {
+  // Animation DNA Helix - xoắn ốc như chuỗi DNA
+  useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += 0.005;
-      meshRef.current.rotation.y += 0.005;
+      const time = state.clock.elapsedTime;
+      // Tạo chuyển động xoắn ốc
+      meshRef.current.position.x = Math.sin(time * 2) * 2;
+      meshRef.current.position.y = Math.cos(time * 3) * 1.5;
+      meshRef.current.position.z = Math.sin(time * 1.5) * 1;
+      
+      // Xoay phức tạp theo 3 trục
+      meshRef.current.rotation.x = time * 0.5;
+      meshRef.current.rotation.y = time * 0.8;
+      meshRef.current.rotation.z = time * 0.3;
+      
+      // Scale thay đổi theo thời gian
+      const scaleValue = 1 + Math.sin(time * 4) * 0.3;
+      meshRef.current.scale.set(scaleValue, scaleValue, scaleValue);
     }
   });
 
   return (
-    // Box là một component tiện ích từ @react-three/drei
     <Box
-      args={[3, 3, 3]} // Kích thước của khối (width, height, depth)
+      args={[2.5, 2.5, 2.5]}
       ref={meshRef}
-      scale={active ? 1.5 : 1}
       onClick={() => setActive(!active)}
       onPointerOver={() => setHover(true)}
       onPointerOut={() => setHover(false)}
     >
-      {/* Sử dụng MeshStandardMaterial cho hiệu ứng ánh sáng tốt hơn */}
-      <meshStandardMaterial map={texture} color={hovered ? 'hotpink' : 'orange'} />
+      <meshStandardMaterial 
+        map={texture} 
+        color={hovered ? '#ff00ff' : '#00ffff'} 
+        emissive={hovered ? '#ff0080' : '#0080ff'}
+        emissiveIntensity={0.2}
+      />
     </Box>
   );
 }
 
-// Component hiển thị khối 3D với ảnh - Animation bouncing/floating
-function FloatingBox({ imageUrl }) {
+// Component hiển thị khối 3D với ảnh - Animation Morphing + Teleport
+function MorphingBox({ imageUrl }) {
   const meshRef = useRef();
+  const sphereRef = useRef();
+  const torusRef = useRef();
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
 
   // Load ảnh làm texture
   const texture = useLoader(TextureLoader, imageUrl);
 
-  // Animation floating lên xuống và xoay nhẹ
+  // Animation Morphing - biến hình liên tục với nhiều shapes
   useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
     if (meshRef.current) {
-      // Floating animation (lên xuống)
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.5;
-      // Xoay nhẹ theo trục Y
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.3;
-      // Xoay nhẹ theo trục X
-      meshRef.current.rotation.x = Math.cos(state.clock.elapsedTime * 0.5) * 0.2;
+      // Morphing shape - thay đổi kích thước từng trục
+      const scaleX = 1 + Math.sin(time * 3) * 0.5;
+      const scaleY = 1 + Math.cos(time * 2) * 0.8;
+      const scaleZ = 1 + Math.sin(time * 2.5) * 0.6;
+      meshRef.current.scale.set(scaleX, scaleY, scaleZ);
+      
+      // Teleport effect - nhảy vị trí ngẫu nhiên
+      meshRef.current.position.x = Math.sin(time * 5) * 3;
+      meshRef.current.position.y = Math.cos(time * 7) * 2;
+      meshRef.current.position.z = Math.sin(time * 4) * 1.5;
+      
+      // Crazy rotation
+      meshRef.current.rotation.x = time * 2;
+      meshRef.current.rotation.y = time * -1.5;
+      meshRef.current.rotation.z = time * 3;
+    }
+
+    // Animate sphere around the main box
+    if (sphereRef.current) {
+      sphereRef.current.position.x = Math.cos(time * 3) * 4;
+      sphereRef.current.position.y = Math.sin(time * 2) * 3;
+      sphereRef.current.position.z = Math.sin(time * 4) * 2;
+      sphereRef.current.rotation.x = time * 4;
+    }
+
+    // Animate torus
+    if (torusRef.current) {
+      torusRef.current.position.x = Math.sin(time * 2.5) * 3.5;
+      torusRef.current.position.y = Math.cos(time * 3.5) * 2.5;
+      torusRef.current.rotation.x = time * 2;
+      torusRef.current.rotation.y = time * 3;
     }
   });
 
   return (
-    <Box
-      args={[2.5, 2.5, 2.5]} // Kích thước khác một chút
-      ref={meshRef}
-      scale={active ? 1.3 : 1}
-      onClick={() => setActive(!active)}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
-    >
-      {/* Material với màu khác */}
-      <meshStandardMaterial map={texture} color={hovered ? 'lightblue' : 'lightgreen'} />
-    </Box>
+    <group>
+      {/* Main morphing box */}
+      <Box
+        args={[2, 2, 2]}
+        ref={meshRef}
+        onClick={() => setActive(!active)}
+        onPointerOver={() => setHover(true)}
+        onPointerOut={() => setHover(false)}
+      >
+        <meshStandardMaterial 
+          map={texture} 
+          color={hovered ? '#ffff00' : '#ff8000'} 
+          emissive={hovered ? '#ff4000' : '#ff0040'}
+          emissiveIntensity={0.3}
+          wireframe={active}
+        />
+      </Box>
+      
+      {/* Orbiting sphere */}
+      <Sphere args={[0.5]} ref={sphereRef}>
+        <meshStandardMaterial 
+          map={texture}
+          color="#ff00aa"
+          emissive="#aa00ff"
+          emissiveIntensity={0.4}
+        />
+      </Sphere>
+      
+      {/* Orbiting torus */}
+      <Torus args={[0.8, 0.3, 8, 16]} ref={torusRef}>
+        <meshStandardMaterial 
+          map={texture}
+          color="#00aaff"
+          emissive="#0055ff"
+          emissiveIntensity={0.3}
+        />
+      </Torus>
+    </group>
   );
 }
 
@@ -89,54 +159,58 @@ function App() {
 
   return (
     <div className="App">
-      {/* Section 1 */}
+      {/* Section 1 - DNA Helix Animation */}
       <div className="section" id="section1">
-        <h1 className="title">Chào Bé Nương!</h1>
+        <h1 className="title">🧬 DNA HELIX MADNESS! 🧬</h1>
         <Canvas
-          camera={{ position: [0, 0, 8], fov: 75 }} // Thiết lập camera
-          style={{ background: '#282c34', height: '70vh' }} // Màu nền của canvas
+          camera={{ position: [0, 0, 10], fov: 75 }}
+          style={{ background: 'radial-gradient(circle, #1a1a2e, #16213e, #0f3460)' }}
         >
-          {/* Ánh sáng để khối 3D có thể nhìn thấy được */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
+          {/* Ánh sáng cho hiệu ứng dramatic */}
+          <ambientLight intensity={0.3} />
+          <directionalLight position={[10, 10, 5]} intensity={1} color="#ff00ff" />
+          <directionalLight position={[-10, -10, -5]} intensity={1} color="#00ffff" />
+          <spotLight position={[0, 10, 0]} intensity={2} color="#ffffff" />
 
           {/* Suspense để xử lý việc tải ảnh */}
           <Suspense fallback={null}>
-            <TexturedBox imageUrl={imagePath} />
+            <DNAHelixBox imageUrl={imagePath} />
           </Suspense>
 
-          {/* OrbitControls cho phép xoay, zoom cảnh bằng chuột */}
-          <OrbitControls />
+          {/* OrbitControls */}
+          <OrbitControls enableZoom={true} enablePan={false} />
         </Canvas>
-        <p className="footer-text">Click và kéo để xoay khối! Cuộn để zoom.</p>
+        <p className="footer-text">🤯 DNA HELIX ANIMATION! Hover để đổi màu!</p>
         
-        {/* Nút scroll xuống */}
-        <button className="scroll-button" onClick={scrollToSection2}>
-          ⬇️ Xem thêm animation khác
+        {/* Nút scroll xuống với animation mới */}
+        <button className="scroll-button crazy-button" onClick={scrollToSection2}>
+          🚀 MORPHING CHAOS! 🚀
         </button>
       </div>
 
-      {/* Section 2 */}
+      {/* Section 2 - Morphing Chaos */}
       <div className="section" id="section2">
-        <h1 className="title">Animation Floating!</h1>
+        <h1 className="title">⚡ MORPHING CHAOS! ⚡</h1>
         <Canvas
-          camera={{ position: [0, 0, 8], fov: 75 }} // Thiết lập camera
-          style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', height: '70vh' }} // Gradient background
+          camera={{ position: [0, 0, 12], fov: 75 }}
+          style={{ background: 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0080ff, #8000ff, #ff00ff)' }}
         >
-          {/* Ánh sáng cho section 2 */}
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[-10, 10, 5]} intensity={1.2} />
-          <spotLight position={[0, 10, 0]} intensity={0.5} />
+          {/* Ánh sáng rainbow */}
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ff0080" />
+          <directionalLight position={[-5, -5, -5]} intensity={1.5} color="#0080ff" />
+          <spotLight position={[0, 0, 10]} intensity={3} color="#ffffff" />
+          <spotLight position={[10, 10, 0]} intensity={2} color="#ff8000" />
 
           {/* Suspense để xử lý việc tải ảnh thứ 2 */}
           <Suspense fallback={null}>
-            <FloatingBox imageUrl={imagePath2} />
+            <MorphingBox imageUrl={imagePath2} />
           </Suspense>
 
-          {/* OrbitControls cho section 2 */}
-          <OrbitControls />
+          {/* OrbitControls */}
+          <OrbitControls enableZoom={true} enablePan={true} />
         </Canvas>
-        <p className="footer-text">Khối này có animation floating! Click để phóng to.</p>
+        <p className="footer-text">🌈 MORPHING + TELEPORT + ORBITING CHAOS! 🌈</p>
       </div>
     </div>
   );
