@@ -2,7 +2,7 @@
   "name": "my-animated-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://NuongBee2003.github.io/my-animated-website",
+  "homepage": "https://github.com/NuongBee2003/my-animated-website.git",
   "dependencies": {
     "@react-three/drei": "^10.4.4",
     "@react-three/fiber": "^9.2.0",
