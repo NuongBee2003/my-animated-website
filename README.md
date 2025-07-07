@@ -1,23 +1,74 @@
-# Getting Started with Create React App
+# 🌟 Bé Nương's 3D Animated Website 🌟
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🎨 **Website 3D tuyệt đẹp với animation điên rồ!** 🎨
 
-## Available Scripts
+## 🚀 Live Demo
+**[Xem website tại đây!](https://nuongbee2003.github.io/my-animated-website)** 
 
-In the project directory, you can run:
+## ✨ Tính năng
 
-### `npm start`
+### 🧬 Section 1: DNA HELIX MADNESS
+- **Animation DNA Helix 3D** - khối hình xoắn ốc như chuỗi DNA
+- **Rainbow neon lighting** với emissive effects
+- **Glowing pulsing text** với rainbow colors
+- **Interactive hover effects**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### ⚡ Section 2: MORPHING CHAOS  
+- **Morphing animation** - biến hình liên tục
+- **Teleport effects** - nhảy vị trí ngẫu nhiên
+- **Multi-object orbiting** - Sphere và Torus quay quanh
+- **Wireframe mode** khi click
+- **Psychedelic rainbow gradient background**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🎨 UI/UX Features
+- **Smooth scrolling** giữa sections
+- **Psychedelic buttons** với crazy animations
+- **OrbitControls** - kéo, zoom, xoay view
+- **Responsive design**
 
-### `npm test`
+## 🛠️ Tech Stack
+- **React** - Frontend framework
+- **Three.js** - 3D graphics
+- **@react-three/fiber** - React renderer cho Three.js  
+- **@react-three/drei** - Helper components
+- **CSS Animations** - Effects và transitions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📦 Installation & Setup
+
+```bash
+# Clone repository
+git clone https://github.com/NuongBee2003/my-animated-website.git
+
+# Vào thư mục project
+cd my-animated-website
+
+# Install dependencies
+npm install
+
+# Chạy development server
+npm start
+
+# Build cho production
+npm run build
+
+# Deploy lên GitHub Pages
+npm run deploy
+```
+
+## 🎮 Controls
+- **Mouse drag**: Xoay view 3D
+- **Mouse wheel**: Zoom in/out
+- **Hover**: Thay đổi màu sắc
+- **Click objects**: Special effects (scale, wireframe)
+- **Scroll button**: Chuyển section
+
+## 🌈 Screenshots
+- DNA Helix với xoắn ốc 3D và neon lighting
+- Morphing Chaos với rainbow background
+- Psychedelic UI với glowing effects
+
+---
+**Made with ❤️ by Bé Nương**
 
 ### `npm run build`
 
