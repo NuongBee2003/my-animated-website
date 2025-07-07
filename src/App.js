@@ -45,9 +45,11 @@ function DNAHelixBox({ imageUrl }) {
     >
       <meshStandardMaterial 
         map={texture} 
-        color={hovered ? '#ff00ff' : '#00ffff'} 
-        emissive={hovered ? '#ff0080' : '#0080ff'}
-        emissiveIntensity={0.2}
+        color={hovered ? '#f093fb' : '#667eea'} 
+        emissive={hovered ? '#764ba2' : '#4facfe'}
+        emissiveIntensity={0.3}
+        roughness={0.3}
+        metalness={0.7}
       />
     </Box>
   );
@@ -115,10 +117,12 @@ function MorphingBox({ imageUrl }) {
       >
         <meshStandardMaterial 
           map={texture} 
-          color={hovered ? '#ffff00' : '#ff8000'} 
-          emissive={hovered ? '#ff4000' : '#ff0040'}
-          emissiveIntensity={0.3}
+          color={hovered ? '#f5576c' : '#4facfe'} 
+          emissive={hovered ? '#f093fb' : '#667eea'}
+          emissiveIntensity={0.4}
           wireframe={active}
+          roughness={0.2}
+          metalness={0.8}
         />
       </Box>
       
@@ -126,9 +130,11 @@ function MorphingBox({ imageUrl }) {
       <Sphere args={[0.5]} ref={sphereRef}>
         <meshStandardMaterial 
           map={texture}
-          color="#ff00aa"
-          emissive="#aa00ff"
-          emissiveIntensity={0.4}
+          color="#f093fb"
+          emissive="#764ba2"
+          emissiveIntensity={0.5}
+          roughness={0.1}
+          metalness={0.9}
         />
       </Sphere>
       
@@ -136,9 +142,11 @@ function MorphingBox({ imageUrl }) {
       <Torus args={[0.8, 0.3, 8, 16]} ref={torusRef}>
         <meshStandardMaterial 
           map={texture}
-          color="#00aaff"
-          emissive="#0055ff"
-          emissiveIntensity={0.3}
+          color="#4facfe"
+          emissive="#00f2fe"
+          emissiveIntensity={0.4}
+          roughness={0.2}
+          metalness={0.8}
         />
       </Torus>
     </group>
@@ -161,16 +169,20 @@ function App() {
     <div className="App">
       {/* Section 1 - DNA Helix Animation */}
       <div className="section" id="section1">
-        <h1 className="title">🧬 DNA HELIX MADNESS! 🧬</h1>
+        <h1 className="title">✨ DNA HELIX ANIMATION ✨</h1>
         <Canvas
           camera={{ position: [0, 0, 10], fov: 75 }}
-          style={{ background: 'radial-gradient(circle, #1a1a2e, #16213e, #0f3460)' }}
+          style={{ 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+            borderRadius: '20px',
+            margin: '20px'
+          }}
         >
-          {/* Ánh sáng cho hiệu ứng dramatic */}
-          <ambientLight intensity={0.3} />
-          <directionalLight position={[10, 10, 5]} intensity={1} color="#ff00ff" />
-          <directionalLight position={[-10, -10, -5]} intensity={1} color="#00ffff" />
-          <spotLight position={[0, 10, 0]} intensity={2} color="#ffffff" />
+          {/* Modern lighting setup */}
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[10, 10, 5]} intensity={1.2} color="#667eea" />
+          <directionalLight position={[-10, -10, -5]} intensity={1} color="#764ba2" />
+          <spotLight position={[0, 15, 0]} intensity={2} color="#f093fb" angle={0.3} />
 
           {/* Suspense để xử lý việc tải ảnh */}
           <Suspense fallback={null}>
@@ -180,27 +192,31 @@ function App() {
           {/* OrbitControls */}
           <OrbitControls enableZoom={true} enablePan={false} />
         </Canvas>
-        <p className="footer-text">🤯 DNA HELIX ANIMATION! Hover để đổi màu!</p>
+        <p className="footer-text">� Interactive DNA Helix • Hover to change colors</p>
         
-        {/* Nút scroll xuống với animation mới */}
+        {/* Nút scroll xuống với style mới */}
         <button className="scroll-button crazy-button" onClick={scrollToSection2}>
-          🚀 MORPHING CHAOS! 🚀
+          🚀 View Morphing Art
         </button>
       </div>
 
       {/* Section 2 - Morphing Chaos */}
       <div className="section" id="section2">
-        <h1 className="title">⚡ MORPHING CHAOS! ⚡</h1>
+        <h1 className="title">🎨 MORPHING MASTERPIECE 🎨</h1>
         <Canvas
           camera={{ position: [0, 0, 12], fov: 75 }}
-          style={{ background: 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0080ff, #8000ff, #ff00ff)' }}
+          style={{ 
+            background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%)',
+            borderRadius: '20px',
+            margin: '20px'
+          }}
         >
-          {/* Ánh sáng rainbow */}
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ff0080" />
-          <directionalLight position={[-5, -5, -5]} intensity={1.5} color="#0080ff" />
-          <spotLight position={[0, 0, 10]} intensity={3} color="#ffffff" />
-          <spotLight position={[10, 10, 0]} intensity={2} color="#ff8000" />
+          {/* Sophisticated lighting */}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#f093fb" />
+          <directionalLight position={[-5, -5, -5]} intensity={1.3} color="#4facfe" />
+          <spotLight position={[0, 0, 10]} intensity={2.5} color="#ffffff" />
+          <spotLight position={[10, 10, 0]} intensity={1.8} color="#f5576c" />
 
           {/* Suspense để xử lý việc tải ảnh thứ 2 */}
           <Suspense fallback={null}>
@@ -210,7 +226,7 @@ function App() {
           {/* OrbitControls */}
           <OrbitControls enableZoom={true} enablePan={true} />
         </Canvas>
-        <p className="footer-text">🌈 MORPHING + TELEPORT + ORBITING CHAOS! 🌈</p>
+        <p className="footer-text">� Multi-Object Morphing • Click for wireframe mode</p>
       </div>
     </div>
   );
